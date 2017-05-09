@@ -9,6 +9,8 @@ $signKey = getenv('SEDO_SIGN_KEY');
 
 $sedo = new \SedoClient\Sedo($username, $password, $partnerId, $signKey);
 
+$sedo->setMethod('GetAccountData');
+
 $response = $sedo->call()->getResponse();
 
 print_r($response);

@@ -10,7 +10,27 @@ class Sedo
 {
     protected $client;
 
+    protected $credentialParams;
+
     protected $params;
+
+    /**
+     * @return array
+     */
+    public function getCredentialParams()
+    {
+        return $this->credentialParams;
+    }
+
+    /**
+     * @param array $credentialParams
+     * @return Sedo
+     */
+    public function setCredentialParams($credentialParams)
+    {
+        $this->credentialParams = $credentialParams;
+        return $this;
+    }
 
     protected $signKey;
 
@@ -47,12 +67,14 @@ class Sedo
             ]
         );
 
-        $this->params = $params = [
+        $this->credentialParams = [
             'username' => $this->username,
             'password' => $this->password,
             'partnerid' => $this->partnerId,
             'signkey' => $this->signKey
         ];
+
+        $this->params = [];
 
         $this->interface = 'urn:SedoInterface';
     }
@@ -65,24 +87,10 @@ class Sedo
      */
     public function call()
     {
-        $result = $this->client->call($this->method, ['name' => $this->params], $this->interface);
+        $params = array_merge($this->params, $this->credentialParams);
 
-        // Check for a fault
-        if ($this->client->fault)
-            throw new ClientFaultException($result['faultcode'] . ": " . $result['faultstring']);
-
-        // Check for an error
-        $err = $this->client->getError();
-        if ($err)
-            throw new ClientErrorException($err);
-
-        $result = [];
-        while (list ($key, $val) = each ($result))
-        {
-            $result[$key] = $val;
-        }
-
-        $this->response = $result;
+        $this->request = $params;
+        $this->response = $this->client->__soapCall($this->method, ['name' => $params]);
 
         return $this;
     }
