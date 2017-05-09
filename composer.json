@@ -1,0 +1,17 @@
+{
+    "name": "pangpondpon/sedo-api-client",
+    "authors": [
+        {
+            "name": "Patompong Savaengsuk",
+            "email": "p.pangpond@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SedoClient\\": "src/"
+        }
+    }
+}
