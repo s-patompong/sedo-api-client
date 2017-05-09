@@ -46,8 +46,6 @@ class Sedo
 
     protected $method;
 
-    protected $interface;
-
     public function __construct($username, $password, $signKey, $partnerId)
     {
         $this->username = $username;
@@ -75,8 +73,6 @@ class Sedo
         ];
 
         $this->params = [];
-
-        $this->interface = 'urn:SedoInterface';
     }
 
     /**
@@ -256,25 +252,5 @@ class Sedo
         $this->method = $method;
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function getInterface()
-    {
-        return $this->interface;
-    }
-
-    /**
-     * @param string $interface
-     * @return Sedo
-     */
-    public function setInterface($interface)
-    {
-        $this->interface = $interface;
-        return $this;
-    }
-
-
-
+    
 }
