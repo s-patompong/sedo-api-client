@@ -12,3 +12,20 @@ SEDO_PASSWORD=
 SEDO_PARTNER_ID=
 SEDO_SIGN_KEY=
 ```
+
+### Usage
+You can inject the class to your method or use resolve helper
+```
+Route::get('/inject', function (SedoClient\Sedo $sedo) {
+    dd($sedo);
+});
+
+Route::get('/inject-domain', function (SedoClient\SedoDomain $sedoDomain) {
+    dd($sedoDomain);
+});
+
+Route::get('/inject-resolve', function () {
+    $sedo = resolve('SedoClient\Sedo');
+    dd($sedo);
+});
+```
