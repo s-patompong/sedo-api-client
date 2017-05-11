@@ -2,6 +2,7 @@
 
 namespace SedoClient;
 
+use SedoClient\Exceptions\MaxElementsExceeded;
 use SoapClient;
 use SedoClient\Exceptions\ClientErrorException;
 use SedoClient\Exceptions\ClientFaultException;
@@ -240,6 +241,20 @@ class Sedo
     {
         $this->credentialParams = $credentialParams;
         return $this;
+    }
+
+    /**
+     * Verify the max element allowed for the data
+     * @param $maxElements
+     * @param $data
+     * @param $key
+     * @throws MaxElementsExceeded
+     */
+    protected function verifyMaxElements($maxElements, $data, $key)
+    {
+        if(count($data) > $maxElements) {
+            throw new MaxElementsExceeded("Max element exceeded, amount of data in $key should not be more than $maxElements");
+        }
     }
     
 }
