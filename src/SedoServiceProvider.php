@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 
 class SedoServiceProvider extends ServiceProvider
 {
+    private $configFileName = 'sedo';
+
     /**
      * Bootstrap the application services.
      *
@@ -15,7 +17,7 @@ class SedoServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/sedo.php' => config_path('sedo.php'),
+            __DIR__ . "/../config/{$this->configFileName}.php" => config_path("{$this->configFileName}.php"),
         ]);
     }
 
@@ -28,13 +30,13 @@ class SedoServiceProvider extends ServiceProvider
     {
         $this->app->bind(Sedo::class, function ($app) {
             return new Sedo(
-                config('username'),
-                config('password'),
-                config('sign_key'),
-                config('partner_id'),
-                config('timeout'),
-                config('exceptions'),
-                config('wsdl')
+                config("{$this->configFileName}.username"),
+                config("{$this->configFileName}.password"),
+                config("{$this->configFileName}.sign_key"),
+                config("{$this->configFileName}.partner_id"),
+                config("{$this->configFileName}.timeout"),
+                config("{$this->configFileName}.exceptions"),
+                config("{$this->configFileName}.wsdl")
             );
         });
     }
