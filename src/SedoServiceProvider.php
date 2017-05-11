@@ -26,6 +26,16 @@ class SedoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->bind(Sedo::class, function ($app) {
+            return new Sedo(
+                config('username'),
+                config('password'),
+                config('sign_key'),
+                config('partner_id'),
+                config('timeout'),
+                config('exceptions'),
+                config('wsdl')
+            );
+        });
     }
 }
