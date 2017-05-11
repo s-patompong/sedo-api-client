@@ -14,14 +14,29 @@ class SedoDomain extends Sedo
     /**
      * Insert domain into Sedo database
      * https://api.sedo.com/api/apidocs/API_Profi/functions/sedoapi_DomainInsert.html
-     * @param $domainEntries
+     * @param array $domainEntries
      * @return $this
      */
-    public function insert($domainEntries)
+    public function insert(array $domainEntries)
     {
         $this->method = 'DomainInsert';
 
         $this->params = $domainEntries;
+
+        return $this->call();
+    }
+
+    /**
+     * Delete domain from Sedo list
+     * https://api.sedo.com/api/apidocs/API_Profi/functions/sedoapi_DomainDelete.html
+     * @param array $domains
+     * @return $this
+     */
+    public function delete(array $domains)
+    {
+        $this->method = 'DomainDelete';
+
+        $this->params['domains'] = $domains;
 
         return $this->call();
     }
