@@ -28,16 +28,18 @@ class SedoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Sedo::class, function ($app) {
-            return new Sedo(
-                config("{$this->configFileName}.username"),
-                config("{$this->configFileName}.password"),
-                config("{$this->configFileName}.sign_key"),
-                config("{$this->configFileName}.partner_id"),
-                config("{$this->configFileName}.timeout"),
-                config("{$this->configFileName}.exceptions"),
-                config("{$this->configFileName}.wsdl")
-            );
-        });
+        $username = config("{$this->configFileName}.username");
+        $password = config("{$this->configFileName}.password");
+        $signKey = config("{$this->configFileName}.sign_key");
+        $partnerId = config("{$this->configFileName}.partner_id");
+        $timeout = config("{$this->configFileName}.timeout");
+        $exceptions = config("{$this->configFileName}.exceptions");
+        $wsdl = config("{$this->configFileName}.wsdl");
+
+        $sedo = new Sedo($username, $password, $signKey, $partnerId, $timeout, $exceptions, $wsdl);
+        $this->app->instance(Sedo::class, $sedo);
+
+        $sedoDomain = new SedoDomain($username, $password, $signKey, $partnerId, $timeout, $exceptions, $wsdl);
+        $this->app->instance(SedoDomain::class, $sedoDomain);
     }
 }
