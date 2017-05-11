@@ -9,6 +9,7 @@
     "require": {
         "vlucas/phpdotenv": "^2.4"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "SedoClient\\": "src/"
