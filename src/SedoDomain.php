@@ -24,14 +24,14 @@ class SedoDomain extends Sedo
      * https://api.sedo.com/api/apidocs/API_Profi/functions/sedoapi_DomainInsert.html
      * @param array $domainEntries domain entries must be an array, each element much has key and value like this
      * The $domainEntries should have the size not more than 50
-     * - string $domain - the domain name in Punycode form [compulsory]
-     * - array  $category - You can choose a maximum of 3 categories per domain and send it in array of int
-     * - int    $forsale - 0=Not for sale, 1=For sale [compulsory]
-     * - double $price - The domain price. If no price is to be set, please set the value as 0. [compulsory]
-     * - double $minprice - The minimum price for the domain. For no minimum price, please set the value as 0. [compulsory]
-     * - int    $fixedprice - 0=No, 1=Yes [compulsory]
-     * - int    $currency - 0=EUR, 1=USD, 2=GBP [compulsory]
-     * - string $domainlanguage - ISO-639 two-letter language codes: (de=German, en=English ...) [compulsory]
+     * - string     $domain - the domain name in Punycode form [compulsory]
+     * - array      $category - You can choose a maximum of 3 categories per domain and send it in array of int
+     * - int        $forsale - 0=Not for sale, 1=For sale [compulsory]
+     * - double     $price - The domain price. If no price is to be set, please set the value as 0. [compulsory]
+     * - double     $minprice - The minimum price for the domain. For no minimum price, please set the value as 0. [compulsory]
+     * - int        $fixedprice - 0=No, 1=Yes [compulsory]
+     * - int        $currency - 0=EUR, 1=USD, 2=GBP [compulsory]
+     * - string     $domainlanguage - ISO-639 two-letter language codes: (de=German, en=English ...) [compulsory]
      * @return $this
      */
     public function insert(array $domainEntries)
