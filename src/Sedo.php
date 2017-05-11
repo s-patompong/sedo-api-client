@@ -8,6 +8,20 @@ use SedoClient\Exceptions\ClientFaultException;
 
 class Sedo
 {
+    const WSDL = 'https://api.sedo.com/api/sedointerface.php?wsdl';
+
+    const URL = 'https://api.sedo.com/api/sedointerface.php';
+
+    const URI = 'urn:SedoInterface';
+
+    const ENCODING = 'UTF-8';
+
+    const SOAP_VERSION = SOAP_1_1;
+
+    const SOAP_STYLE = SOAP_RPC;
+
+    const SOAP_USE = SOAP_ENCODED;
+
     protected $client;
 
     protected $credentialParams;
@@ -22,8 +36,6 @@ class Sedo
 
     protected $password;
 
-    protected $request;
-
     protected $response;
 
     protected $method;
@@ -36,14 +48,14 @@ class Sedo
         $this->partnerId = $partnerId;
 
         $this->client = new SoapClient(
-            "https://api.sedo.com/api/sedointerface.php?wsdl",
+            self::WSDL,
             [
-                'location' => "https://api.sedo.com/api/sedointerface.php",
-                'soap_version' => SOAP_1_1,
-                'encoding' => 'UTF-8',
-                'uri' => 'urn:SedoInterface',
-                'style' => SOAP_RPC,
-                'use' => SOAP_ENCODED,
+                'location' => self::URL,
+                'soap_version' => self::SOAP_VERSION,
+                'encoding' => self::ENCODING,
+                'uri' => self::URI,
+                'style' => self::SOAP_STYLE,
+                'use' => self::SOAP_USE,
             ]
         );
 
@@ -65,10 +77,7 @@ class Sedo
      */
     public function call()
     {
-        $params = array_merge($this->params, $this->credentialParams);
-
-        $this->request = $params;
-        $this->response = $this->client->__soapCall($this->method, ['name' => $params]);
+        $this->response = $this->client->__soapCall($this->method, ['name' => $this->getRequest()]);
 
         return $this;
     }
@@ -186,17 +195,7 @@ class Sedo
      */
     public function getRequest()
     {
-        return $this->request;
-    }
-
-    /**
-     * @param mixed $request
-     * @return Sedo
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
-        return $this;
+        return array_merge($this->params, $this->credentialParams);
     }
 
     /**
@@ -205,16 +204,6 @@ class Sedo
     public function getResponse()
     {
         return $this->response;
-    }
-
-    /**
-     * @param mixed $response
-     * @return Sedo
-     */
-    public function setResponse($response)
-    {
-        $this->response = $response;
-        return $this;
     }
 
     /**
