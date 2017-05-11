@@ -14,24 +14,6 @@ class Sedo
 
     protected $params;
 
-    /**
-     * @return array
-     */
-    public function getCredentialParams()
-    {
-        return $this->credentialParams;
-    }
-
-    /**
-     * @param array $credentialParams
-     * @return Sedo
-     */
-    public function setCredentialParams($credentialParams)
-    {
-        $this->credentialParams = $credentialParams;
-        return $this;
-    }
-
     protected $signKey;
 
     protected $partnerId;
@@ -250,6 +232,24 @@ class Sedo
     public function setMethod($method)
     {
         $this->method = $method;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCredentialParams()
+    {
+        return $this->credentialParams;
+    }
+
+    /**
+     * @param array $credentialParams
+     * @return Sedo
+     */
+    public function setCredentialParams($credentialParams)
+    {
+        $this->credentialParams = $credentialParams;
         return $this;
     }
     
