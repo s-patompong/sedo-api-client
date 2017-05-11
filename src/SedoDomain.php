@@ -14,11 +14,6 @@ class SedoDomain extends Sedo
 
     const CURRENCY_GBP = 2;
 
-    public function __construct($username, $password, $signKey, $partnerId)
-    {
-        parent::__construct($username, $password, $signKey, $partnerId);
-    }
-
     /**
      * Insert domain into Sedo database
      * https://api.sedo.com/api/apidocs/API_Profi/functions/sedoapi_DomainInsert.html
