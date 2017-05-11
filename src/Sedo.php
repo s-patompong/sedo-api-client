@@ -4,8 +4,6 @@ namespace SedoClient;
 
 use SedoClient\Exceptions\MaxElementsExceeded;
 use SoapClient;
-use SedoClient\Exceptions\ClientErrorException;
-use SedoClient\Exceptions\ClientFaultException;
 
 class Sedo
 {
@@ -73,8 +71,6 @@ class Sedo
     /**
      * Call the SOAP request
      * @return $this
-     * @throws ClientErrorException
-     * @throws ClientFaultException
      */
     public function call()
     {
