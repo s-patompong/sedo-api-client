@@ -7,20 +7,6 @@ use SoapClient;
 
 class Sedo
 {
-    const WSDL = 'https://api.sedo.com/api/sedointerface.php?wsdl';
-
-    const URL = 'https://api.sedo.com/api/sedointerface.php';
-
-    const URI = 'urn:SedoInterface';
-
-    const ENCODING = 'UTF-8';
-
-    const SOAP_VERSION = SOAP_1_1;
-
-    const SOAP_STYLE = SOAP_RPC;
-
-    const SOAP_USE = SOAP_ENCODED;
-
     protected $client;
 
     protected $credentialParams;
@@ -39,22 +25,37 @@ class Sedo
 
     protected $method;
 
-    public function __construct($username, $password, $signKey, $partnerId)
-    {
+    protected $timeout;
+
+    protected $soapExceptions;
+
+    protected $wsdl;
+
+    /**
+     * Sedo constructor.
+     * @param $username
+     * @param $password
+     * @param $signKey
+     * @param $partnerId
+     * @param int $timeout
+     * @param bool $exceptions
+     * @param string $wsdl
+     * @throws \SoapFault
+     */
+    public function __construct($username, $password, $signKey, $partnerId, $timeout = 30, $exceptions = true, $wsdl = 'https://api.sedo.com/api/sedointerface.php?wsdl') {
         $this->username = $username;
         $this->password = $password;
         $this->signKey = $signKey;
         $this->partnerId = $partnerId;
+        $this->timeout = $timeout;
+        $this->soapExceptions = $exceptions;
+        $this->wsdl = $wsdl;
 
         $this->client = new SoapClient(
-            self::WSDL,
+            $this->wsdl,
             [
-                'location' => self::URL,
-                'soap_version' => self::SOAP_VERSION,
-                'encoding' => self::ENCODING,
-                'uri' => self::URI,
-                'style' => self::SOAP_STYLE,
-                'use' => self::SOAP_USE,
+                'exceptions' => $exceptions,
+                'connection_timeout' => $timeout,
             ]
         );
 
@@ -248,9 +249,64 @@ class Sedo
      */
     protected function verifyMaxElements($maxElements, $data, $key)
     {
-        if(count($data) > $maxElements) {
+        if (count($data) > $maxElements) {
             throw new MaxElementsExceeded("Max element exceeded, amount of data in $key should not be more than $maxElements");
         }
     }
-    
+
+    /**
+     * @return int
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param int $timeout
+     * @return Sedo
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSoapExceptions()
+    {
+        return $this->soapExceptions;
+    }
+
+    /**
+     * @param bool $soapExceptions
+     * @return Sedo
+     */
+    public function setSoapExceptions($soapExceptions)
+    {
+        $this->soapExceptions = $soapExceptions;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWsdl()
+    {
+        return $this->wsdl;
+    }
+
+    /**
+     * @param mixed $wsdl
+     * @return Sedo
+     */
+    public function setWsdl($wsdl)
+    {
+        $this->wsdl = $wsdl;
+        return $this;
+    }
+
+
 }
