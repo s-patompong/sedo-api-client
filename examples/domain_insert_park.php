@@ -11,6 +11,6 @@ $signKey = getenv('SEDO_SIGN_KEY');
 
 $sedo = new SedoDomain($username, $password, $signKey, $partnerId);
 
-$response = $sedo->insertToPark(['abc.example.com', 'def.example.com', 'ghi.example.com']);
+$response = $sedo->insertToPark(['sound-offs.com'])->toArray();
 
 print_r($response);

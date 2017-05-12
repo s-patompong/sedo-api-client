@@ -41,7 +41,7 @@ class SedoDomain extends Sedo
 
         $this->method = 'DomainInsert';
 
-        $this->params = $domainEntries;
+        $this->params['domainentry'] = $domainEntries;
 
         return $this->call();
     }
