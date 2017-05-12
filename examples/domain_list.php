@@ -11,6 +11,6 @@ $signKey = getenv('SEDO_SIGN_KEY');
 
 $sedo = new SedoDomain($username, $password, $signKey, $partnerId);
 
-$response = $sedo->list();
+$response = $sedo->list()->toArray();
 
 print_r($response);

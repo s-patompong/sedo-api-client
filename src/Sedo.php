@@ -308,5 +308,22 @@ class Sedo
         return $this;
     }
 
+    /**
+     * Get response as array
+     * @return mixed
+     */
+    public function toArray()
+    {
+        return json_decode($this->toJson(), true);
+    }
+
+    /**
+     * Get response as json
+     * @return string
+     */
+    public function toJson()
+    {
+        return json_encode($this->response);
+    }
 
 }
