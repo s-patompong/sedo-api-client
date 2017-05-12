@@ -29,8 +29,6 @@ class Sedo
 
     protected $timeout;
 
-    protected $soapExceptions;
-
     protected $wsdl;
 
     protected $isLog = false;
@@ -44,23 +42,21 @@ class Sedo
      * @param $signKey
      * @param $partnerId
      * @param int $timeout
-     * @param bool $exceptions
      * @param string $wsdl
      * @throws \SoapFault
      */
-    public function __construct($username, $password, $signKey, $partnerId, $timeout = 30, $exceptions = true, $wsdl = 'https://api.sedo.com/api/sedointerface.php?wsdl') {
+    public function __construct($username, $password, $signKey, $partnerId, $timeout = 30, $wsdl = 'https://api.sedo.com/api/sedointerface.php?wsdl') {
         $this->username = $username;
         $this->password = $password;
         $this->signKey = $signKey;
         $this->partnerId = $partnerId;
         $this->timeout = $timeout;
-        $this->soapExceptions = $exceptions;
         $this->wsdl = $wsdl;
 
         $this->client = new SoapClient(
             $this->wsdl,
             [
-                'exceptions' => $exceptions,
+                'exceptions' => false,
                 'connection_timeout' => $timeout,
             ]
         );
@@ -78,12 +74,17 @@ class Sedo
     /**
      * Call the SOAP request
      * @return $this
+     * @throws \SoapFault
      */
     public function call()
     {
         $this->response = $this->client->__soapCall($this->method, ['name' => $this->getRequest()]);
 
         $this->log();
+
+        if($this->response instanceof \SoapFault) {
+            throw $this->response;
+        }
 
         return $this;
     }
@@ -277,24 +278,6 @@ class Sedo
     public function setTimeout($timeout)
     {
         $this->timeout = $timeout;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSoapExceptions()
-    {
-        return $this->soapExceptions;
-    }
-
-    /**
-     * @param bool $soapExceptions
-     * @return Sedo
-     */
-    public function setSoapExceptions($soapExceptions)
-    {
-        $this->soapExceptions = $soapExceptions;
         return $this;
     }
 

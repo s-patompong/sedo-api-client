@@ -6,8 +6,12 @@ $username = getenv('SEDO_USERNAME');
 $password = getenv('SEDO_PASSWORD');
 $partnerId = getenv('SEDO_PARTNER_ID');
 $signKey = getenv('SEDO_SIGN_KEY');
+$isLog = getenv('SEDO_LOG');
+$logPath = getenv('SEDO_LOG_PATH');
 
 $sedo = new \SedoClient\Sedo($username, $password, $signKey, $partnerId);
+
+$sedo->setIsLog($isLog)->setLogPath($logPath);
 
 $sedo->setMethod('GetAccountData');
 
