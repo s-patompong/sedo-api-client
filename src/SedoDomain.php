@@ -14,6 +14,12 @@ class SedoDomain extends Sedo
 
     const CURRENCY_GBP = 2;
 
+    const ORDER_BY_NAME = 0;
+
+    const ORDER_BY_INSERT_DATE = 1;
+
+    const LIST_RESULT_DEFAULT = 10;
+
     /**
      * Insert domain into Sedo database
      * https://api.sedo.com/api/apidocs/API_Profi/functions/sedoapi_DomainInsert.html
@@ -80,6 +86,32 @@ class SedoDomain extends Sedo
         $this->method = 'DomainDelete';
 
         $this->params['domains'] = $domains;
+
+        return $this->call();
+    }
+
+    /**
+     * List domains
+     * https://api.sedo.com/api/apidocs/API_Profi/functions/sedoapi_DomainList.html
+     * @param int $startFrom The start position
+     * @param int $results number of results from the start position. Maximum 100.
+     * @param int $orderBy The Orderby parameter sets the order of the recieved domains
+     * @param array $domains an array with domain names
+     * @return $this
+     */
+    public function list(int $startFrom = 0, $results = self::LIST_RESULT_DEFAULT, $orderBy = self::ORDER_BY_NAME, array $domains = [])
+    {
+        $this->method = 'DomainList';
+
+        $this->params = [
+            'startfrom' => $startFrom,
+            'results' => $results,
+            'orderby' => $orderBy,
+        ];
+
+        if(count($domains)) {
+            $this->params['domain'] = $domains;
+        }
 
         return $this->call();
     }
