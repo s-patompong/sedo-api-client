@@ -2,7 +2,9 @@
 
 namespace SedoClient;
 
+use DateTime;
 use SedoClient\Exceptions\MaxElementsExceeded;
+use SedoClient\Exceptions\UnableToOpenFileException;
 use SoapClient;
 
 class Sedo
@@ -30,6 +32,10 @@ class Sedo
     protected $soapExceptions;
 
     protected $wsdl;
+
+    protected $isLog = false;
+
+    protected $logPath = '';
 
     /**
      * Sedo constructor.
@@ -76,6 +82,8 @@ class Sedo
     public function call()
     {
         $this->response = $this->client->__soapCall($this->method, ['name' => $this->getRequest()]);
+
+        $this->log();
 
         return $this;
     }
@@ -324,6 +332,96 @@ class Sedo
     public function toJson()
     {
         return json_encode($this->response);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLog(): bool
+    {
+        return $this->isLog;
+    }
+
+    /**
+     * @param bool $isLog
+     * @return Sedo
+     */
+    public function setIsLog(bool $isLog): Sedo
+    {
+        $this->isLog = $isLog;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogPath(): string
+    {
+        return $this->logPath;
+    }
+
+    /**
+     * @param string $logPath
+     * @return Sedo
+     */
+    public function setLogPath(string $logPath): Sedo
+    {
+        $this->logPath = $logPath;
+        return $this;
+    }
+
+    /**
+     * Log the request and response to log path
+     */
+    private function log()
+    {
+        if(!$this->isLog()) return;
+
+        $logFile = fopen("{$this->logPath}/{$this->getLogFileName()}", "a");
+
+        if(! $logFile) {
+            throw new UnableToOpenFileException("Unable to open log file.");
+        }
+
+        fwrite($logFile, $this->getLogContent());
+    }
+
+    /**
+     * Get log content
+     * @return string
+     */
+    private function getLogContent()
+    {
+        $dt = new DateTime();
+
+        $data = [
+            'time' => $dt->format('Y-m-d H:i:s'),
+            'method' => $this->method,
+            'request' => $this->getRequest(),
+            'response' => $this->getResponse(),
+        ];
+
+        return ", " . json_encode($data);
+    }
+
+    /**
+     * Get log file name
+     * @return string
+     */
+    private function getLogFileName()
+    {
+        $dt = new DateTime();
+
+        return "{$dt->format('Y-m-d')}.{$this->getLogFileExtension()}";
+    }
+
+    /**
+     * Get log file extension
+     * @return string
+     */
+    private function getLogFileExtension()
+    {
+        return 'log';
     }
 
 }

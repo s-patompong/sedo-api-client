@@ -11,4 +11,7 @@ return [
     'exceptions' => env('SEDO_EXCEPTIONS', true),
     'wsdl' => env('SEDO_WSDL', 'https://api.sedo.com/api/sedointerface.php?wsdl'),
 
+    'log' => env('SEDO_LOG', false),
+    'log_path' => env('SEDO_LOG_PATH'),
+
 ];
