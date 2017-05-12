@@ -395,11 +395,16 @@ class Sedo
         $dt = new DateTime();
 
         $data = [
+            'wsdl' => $this->wsdl,
             'time' => $dt->format('Y-m-d H:i:s'),
             'method' => $this->method,
             'request' => $this->getRequest(),
             'response' => $this->getResponse(),
         ];
+
+        if(isset($_SERVER['REMOTE_ADDR'])) {
+            $data['ip'] = $_SERVER['REMOTE_ADDR'];
+        }
 
         return ", " . json_encode($data);
     }
